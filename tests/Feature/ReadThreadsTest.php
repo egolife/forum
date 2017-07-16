@@ -5,12 +5,9 @@ namespace Tests\Feature;
 use App\Models\Reply;
 use App\Models\Thread;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ReadThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
-
     protected $thread;
 
     public function setUp()
