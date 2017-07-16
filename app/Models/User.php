@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Lab404\Impersonate\Models\Impersonate;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Impersonate;
 
     /**
      * The attributes that are mass assignable.

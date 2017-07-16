@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('impersonate/take/{user}', 'ImpersonateController@take')->name('impersonate');
+Route::get('impersonate/leave', 'ImpersonateController@leave')->name('impersonate.leave');
 
 Route::resource('threads', 'ThreadController', ['only' => ['index', 'show']]);
 Route::resource('threads.replies', 'ReplyController', ['only' => 'store']);
