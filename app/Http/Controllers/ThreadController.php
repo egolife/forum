@@ -8,7 +8,7 @@ class ThreadController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('store');
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     /**
@@ -31,6 +31,16 @@ class ThreadController extends Controller
     public function show(Thread $thread)
     {
         return view('threads.show')->with(compact('thread'));
+    }
+
+    /**
+     * A form for new thread
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('threads.create');
     }
 
     public function store()

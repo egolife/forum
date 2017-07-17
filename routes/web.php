@@ -19,7 +19,7 @@ Auth::routes();
 Route::get('impersonate/take/{user}', 'ImpersonateController@take')->name('impersonate');
 Route::get('impersonate/leave', 'ImpersonateController@leave')->name('impersonate.leave');
 
-Route::resource('threads', 'ThreadController', ['only' => ['index', 'show', 'store']]);
+Route::resource('threads', 'ThreadController', ['only' => ['index', 'show', 'create', 'store']]);
 Route::resource('threads.replies', 'ReplyController', ['only' => 'store']);
 
 Route::get('/home', 'HomeController@index')->name('home');
