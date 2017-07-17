@@ -12,14 +12,16 @@ class ReplyController extends Controller
     }
 
     /**
-     * @param $channelSlug
+     * @param string $channelSlug
      * @param Thread $thread
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store($channelSlug, Thread $thread)
     {
+        $this->validate(request(), ['body' => 'required']);
+
         $thread->addReply([
-            'body'    => request()->body,
+            'body'    => request('body'),
             'user_id' => request()->user()->id,
         ]);
 

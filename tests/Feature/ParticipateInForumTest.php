@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Reply;
 use App\Models\Thread;
-use App\Models\User;
-use Illuminate\Auth\AuthenticationException;
 use Tests\TestCase;
 
 class ParticipateInForumTest extends TestCase
@@ -22,6 +20,18 @@ class ParticipateInForumTest extends TestCase
         $this
             ->get(route('threads.show', [$thread->channel->slug, $thread->id]))
             ->assertSee($reply->body);
+    }
+
+    /** @test */
+    public function a_reply_needs_a_body()
+    {
+        $thread = create(Thread::class);
+        $reply = make(Reply::class, ['body' => null]);
+
+        $this->withExceptionHandling()->signIn()
+            ->post(route('replies.store', [$thread->channel->slug, $thread->id]), $reply->toArray())
+            ->assertSessionHasErrors('body');
+
     }
 
     /** @test */

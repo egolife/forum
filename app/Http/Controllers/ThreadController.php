@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Channel;
 use App\Models\Thread;
 
 class ThreadController extends Controller
@@ -46,6 +47,12 @@ class ThreadController extends Controller
 
     public function store()
     {
+        $this->validate(request(), [
+            'title'      => 'required',
+            'body'       => 'required',
+            'channel_id' => 'required|exists:channels,id',
+        ]);
+
         $thread = Thread::create([
             'user_id'    => auth()->id(),
             'channel_id' => request('channel_id'),
