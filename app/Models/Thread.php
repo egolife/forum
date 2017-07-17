@@ -30,6 +30,16 @@ class Thread extends Model
     }
 
     /**
+     * Channel this thread belongs to
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+    }
+
+    /**
      * Create new reply in this thread with provided attributes
      *
      * @param array $attributes

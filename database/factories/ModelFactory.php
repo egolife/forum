@@ -13,6 +13,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
@@ -30,18 +31,31 @@ $factory->define(User::class, function (Faker\Generator $faker) {
 
 $factory->define(Thread::class, function (Faker\Generator $faker) {
     return [
-        'title'   => $faker->sentence,
-        'body'    => $faker->paragraph,
-        'user_id' => function () {
+        'title'      => $faker->sentence,
+        'body'       => $faker->paragraph,
+        'user_id'    => function () {
             return factory(User::class)->create()->id;
         },
+        'channel_id' => function () {
+            return factory(Channel::class)->create()->id;
+        },
+    ];
+});
+
+$factory->define(Channel::class, function (Faker\Generator $faker) {
+
+    $name = $faker->unique()->word;
+
+    return [
+        'name' => $name,
+        'slug' => str_slug($name),
     ];
 });
 
 $factory->define(Reply::class, function (Faker\Generator $faker) {
     return [
-        'body'    => $faker->paragraph,
-        'user_id' => function () {
+        'body'      => $faker->paragraph,
+        'user_id'   => function () {
             return factory(User::class)->create()->id;
         },
         'thread_id' => function () {

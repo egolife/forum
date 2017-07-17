@@ -25,10 +25,11 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param string $channelSlug
      * @param  \App\Models\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread)
+    public function show($channelSlug, Thread $thread)
     {
         return view('threads.show')->with(compact('thread'));
     }
@@ -46,11 +47,12 @@ class ThreadController extends Controller
     public function store()
     {
         $thread = Thread::create([
-            'user_id' => auth()->id(),
-            'title'   => request('title'),
-            'body'    => request('body'),
+            'user_id'    => auth()->id(),
+            'channel_id' => request('channel_id'),
+            'title'      => request('title'),
+            'body'       => request('body'),
         ]);
 
-        return redirect()->route('threads.show', $thread->id);
+        return redirect()->route('threads.show', [$thread->channel->slug, $thread->id]);
     }
 }

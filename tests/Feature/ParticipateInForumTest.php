@@ -17,18 +17,19 @@ class ParticipateInForumTest extends TestCase
         $reply = make(Reply::class);
 
         $this->signIn()
-            ->post(route('threads.replies.store', $thread->id), $reply->toArray());
+            ->post(route('replies.store', [$thread->channel->slug, $thread->id]), $reply->toArray());
 
         $this
-            ->get(route('threads.show', $thread->id))
+            ->get(route('threads.show', [$thread->channel->slug, $thread->id]))
             ->assertSee($reply->body);
     }
 
     /** @test */
     public function unauthenticated_users_may_not_add_replies()
     {
-        $this->expectException(AuthenticationException::class);
-        $this->post(route('threads.replies.store', 1), []);
+        $this->withExceptionHandling()
+            ->post(route('replies.store', ['channel_slug', 1]), [])
+            ->assertRedirect('/login');
 
     }
 }

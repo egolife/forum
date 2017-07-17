@@ -27,7 +27,8 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_read_a_single_thread()
     {
-        $this->get('/threads/' . $this->thread->id)->assertSee($this->thread->title);
+        $this->get('/threads/' . $this->thread->channel->slug . '/' . $this->thread->id)
+            ->assertSee($this->thread->title);
     }
 
     /** @test */
@@ -35,7 +36,7 @@ class ReadThreadsTest extends TestCase
     {
         $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
 
-        $this->get('/threads/' . $this->thread->id)
+        $this->get('/threads/' . $this->thread->channel->slug . '/' . $this->thread->id)
             ->assertSee($reply->body);
     }
 }

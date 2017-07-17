@@ -19,7 +19,11 @@ Auth::routes();
 Route::get('impersonate/take/{user}', 'ImpersonateController@take')->name('impersonate');
 Route::get('impersonate/leave', 'ImpersonateController@leave')->name('impersonate.leave');
 
-Route::resource('threads', 'ThreadController', ['only' => ['index', 'show', 'create', 'store']]);
-Route::resource('threads.replies', 'ReplyController', ['only' => 'store']);
+Route::get('threads', 'ThreadController@index')->name('threads.index');
+Route::get('threads/create', 'ThreadController@create')->name('threads.create');
+Route::get('threads/{channel}/{thread}', 'ThreadController@show')->name('threads.show');
+Route::post('threads', 'ThreadController@store')->name('threads.store');
+
+Route::post('threads/{channel}/{thread}/replies', 'ReplyController@store')->name('replies.store');
 
 Route::get('/home', 'HomeController@index')->name('home');

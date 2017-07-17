@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,5 +39,24 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test */
+    public function a_thread_belongs_to_a_channel()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertInstanceOf(Channel::class, $thread->channel);
+    }
+
+    /** @test */
+    public function route_function_provide_correct_url()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertEquals(
+            config('app.url') . '/threads/' . $thread->channel->slug . '/' . $thread->id,
+            route('threads.show', [$thread->channel->slug, $thread->id])
+        );
     }
 }
