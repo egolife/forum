@@ -38,6 +38,19 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ route('threads.index') }}">All threads</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            Channels <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            @foreach(App\Models\Channel::all() as $channel)
+                                <li>
+                                    <a href="{{ route('channels.show', $channel->slug) }}">{{ $channel->name }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

@@ -21,6 +21,7 @@ Route::get('impersonate/leave', 'ImpersonateController@leave')->name('impersonat
 
 Route::get('threads', 'ThreadController@index')->name('threads.index');
 Route::get('threads/create', 'ThreadController@create')->name('threads.create');
+Route::get('threads/{channel}', 'ThreadController@index')->name('channels.show');
 Route::get('threads/{channel}/{thread}', 'ThreadController@show')->name('threads.show');
 Route::post('threads', 'ThreadController@store')->name('threads.store');
 

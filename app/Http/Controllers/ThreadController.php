@@ -15,11 +15,16 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Channel|null $channel
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $channel = null)
     {
-        $threads = Thread::latest()->get();
+        if ($channel && $channel->exists) {
+            $threads = $channel->threads()->latest()->get();
+        } else {
+            $threads = Thread::latest()->get();
+        }
         return view('threads.index')->with(compact('threads'));
     }
 
