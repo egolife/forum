@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filters\ThreadFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -47,5 +48,10 @@ class Thread extends Model
     public function addReply(array $attributes)
     {
         $this->replies()->create($attributes);
+    }
+
+    public function scopeFilter($query, ThreadFilter $filter)
+    {
+        return $filter->apply($query);
     }
 }

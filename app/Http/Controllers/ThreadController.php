@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ThreadFilter;
 use App\Models\Channel;
 use App\Models\Thread;
-use App\Models\User;
 
 class ThreadController extends Controller
 {
@@ -19,18 +19,13 @@ class ThreadController extends Controller
      * @param Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadFilter $filter)
     {
+        $threads = Thread::filter($filter)->latest();
         if ($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
+            $threads->where('channel_id', $channel->id);
         }
 
-        if ($username = request('by')) {
-            $user = User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
         return view('threads.index')->with(['threads' => $threads->get()]);
     }
 
