@@ -49,7 +49,7 @@
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            @foreach(App\Models\Channel::all() as $channel)
+                            @foreach($channels as $channel)
                                 <li>
                                     <a href="{{ route('channels.show', $channel->slug) }}">{{ $channel->name }}</a>
                                 </li>

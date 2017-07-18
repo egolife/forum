@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Channel;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         View::composer('nav._impersonate', function ($view) {
             $view->with('users', User::all());
+        });
+
+        View::share('channels', function ($view) {
+            $view->with('channels', Channel::all());
         });
     }
 
