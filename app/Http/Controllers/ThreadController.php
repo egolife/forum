@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Models\User;
 
 class ThreadController extends Controller
 {
@@ -15,17 +16,22 @@ class ThreadController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Channel|null $channel
+     * @param Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel = null)
+    public function index(Channel $channel)
     {
-        if ($channel && $channel->exists) {
-            $threads = $channel->threads()->latest()->get();
+        if ($channel->exists) {
+            $threads = $channel->threads()->latest();
         } else {
-            $threads = Thread::latest()->get();
+            $threads = Thread::latest();
         }
-        return view('threads.index')->with(compact('threads'));
+
+        if ($username = request('by')) {
+            $user = User::where('name', $username)->firstOrFail();
+            $threads->where('user_id', $user->id);
+        }
+        return view('threads.index')->with(['threads' => $threads->get()]);
     }
 
     /**

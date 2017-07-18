@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
@@ -49,6 +50,18 @@ class ReadThreadsTest extends TestCase
 
         $this->get('/threads/' . $channel->slug)
             ->assertSee($threadInChannel->title)
+            ->assertDontSee($this->thread->title);
+    }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_any_username()
+    {
+        $this->signIn(create(User::class, ['name' => 'TeAmo']));
+
+        $thread_by_current_user = create(Thread::class, ['user_id' => auth()->id()]);
+
+        $this->get(route('threads.index', ['by' => 'TeAmo']))
+            ->assertSee($thread_by_current_user->title)
             ->assertDontSee($this->thread->title);
     }
 }
