@@ -29,4 +29,4 @@ Route::post('threads/{channel}/{thread}/replies', 'ReplyController@store')->name
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/replies/{reply}/favorites', 'FavoriteController@store');
+Route::post('/replies/{reply}/favorites', 'FavoriteController@store')->name('favorites.store');

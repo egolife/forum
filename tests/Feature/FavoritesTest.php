@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Favorite;
 use App\Models\Reply;
 use Tests\TestCase;
 
@@ -21,7 +20,7 @@ class FavoritesTest extends TestCase
         $this->signIn();
         $reply = create(Reply::class);
 
-        $this->post('replies/' . $reply->id . '/favorites');
+        $this->post(route('favorites.store', $reply->id));
 
         $this->assertCount(1, $reply->favorites);
     }
@@ -32,8 +31,8 @@ class FavoritesTest extends TestCase
         $this->signIn();
         $reply = create(Reply::class);
 
-        $this->post('replies/' . $reply->id . '/favorites');
-        $this->post('replies/' . $reply->id . '/favorites');
+        $this->post(route('favorites.store', $reply->id));
+        $this->post(route('favorites.store', $reply->id));
 
         $this->assertCount(1, $reply->favorites);
     }

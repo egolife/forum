@@ -14,6 +14,7 @@ class FavoriteController extends Controller
     /**
      * @param string $channelSlug
      * @param Reply $thread
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Reply $reply)
