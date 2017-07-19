@@ -50,7 +50,7 @@
                             @if(auth()->check())
                                 <li>
                                     <a href="{{ route('threads.index', ['by' => auth()->user()->name]) }}">
-                                        Mythreads
+                                        My threads
                                     </a>
                                 </li>
                             @endif
