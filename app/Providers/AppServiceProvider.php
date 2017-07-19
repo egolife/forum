@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Channel;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -18,13 +19,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        View::composer('nav._impersonate', function ($view) {
-            $view->with('users', User::all());
+
+        View::composer('*', function ($view) {
+            $channels = Cache::rememberForever('channels', function () {
+                return Channel::all();
+            });
+            $view->with('channels', $channels);
         });
 
-        View::share('channels', function ($view) {
-            $view->with('channels', Channel::all());
+        View::composer('nav._impersonate', function ($view) {
+            $users = Cache::rememberForever('users', function () {
+                return User::all();
+            });
+            $view->with('users', $users);
         });
+
     }
 
     /**
@@ -34,6 +43,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->isLocal()) {
+            $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
+        }
     }
 }

@@ -10,8 +10,8 @@
                 <form action="{{ route('favorites.store', $reply->id) }}" method="POST">
                     {{ csrf_field() }}
                     <button class="btn btn-default" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                        {{ $reply->favorites()->count() }}
-                        {{ str_plural('Favorite', $reply->favorites()->count()) }}
+                        {{ $reply->favorites_count }}
+                        {{ str_plural('Favorite', $reply->favorites_count) }}
                     </button>
                 </form>
             </div>
