@@ -37,11 +37,11 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param string $channelSlug
+     * @param Channel $channel
      * @param  \App\Models\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelSlug, Thread $thread)
+    public function show(Channel $channel, Thread $thread)
     {
         return view('threads.show')->with([
             'thread'  => $thread,
@@ -75,5 +75,16 @@ class ThreadController extends Controller
         ]);
 
         return redirect()->route('threads.show', [$thread->channel->slug, $thread->id]);
+    }
+
+    public function destroy(Channel $channel, Thread $thread)
+    {
+        $thread->delete();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect()->route('threads.index');
     }
 }
