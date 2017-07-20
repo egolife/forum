@@ -7,7 +7,6 @@ use App\Models\Favorite;
 
 trait Favorable
 {
-
     /**
      * Users who favorite this reply
      *

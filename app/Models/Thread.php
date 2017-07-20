@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use App\Filters\ThreadFilter;
+use App\ModelBehaviors\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = ['id'];
 
     protected $with = ['author', 'channel'];
@@ -20,7 +23,7 @@ class Thread extends Model
             $builder->withCount('replies');
         });
 
-        static::deleting(function(Thread $thread){
+        static::deleting(function (Thread $thread) {
             $thread->replies()->delete();
         });
     }

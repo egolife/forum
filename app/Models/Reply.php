@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\ModelBehaviors\Favorable;
+use App\ModelBehaviors\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use Favorable;
+    use Favorable, RecordsActivity;
 
     protected $guarded = ['id'];
 
