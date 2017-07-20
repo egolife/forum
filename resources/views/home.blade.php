@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in as <a href="#">{{ auth()->user()->name }}</a>!
+                    You are logged in as <a href="{{ route('profiles.show', auth()->user()->name) }}">{{ auth()->user()->name }}</a>!
                 </div>
             </div>
         </div>
