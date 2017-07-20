@@ -17,10 +17,14 @@ class DatabaseSeeder extends Seeder
         $users = factory(User::class, 30)->create();
 
         foreach (range(1, 10) as $step) {
-            factory(Thread::class)->create(['user_id' => $users->random()->id])
+            $user_id = $users->random()->id;
+            auth()->loginUsingId($user_id);
+            factory(Thread::class)->create(['user_id' => $user_id])
                 ->each(function (Thread $tread) use ($users) {
+                    $user_id = $users->random()->id;
+                    auth()->loginUsingId($user_id);
                     factory(Reply::class, mt_rand(1, 10))->create([
-                        'user_id'   => $users->random()->id,
+                        'user_id'   => $user_id,
                         'thread_id' => $tread->id,
                     ]);
                 });

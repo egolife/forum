@@ -26,6 +26,8 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'email'          => $faker->unique()->safeEmail,
         'password'       => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'created_at'     => $faker->date(),
+        'updated_at'     => $faker->date(),
     ];
 });
 
@@ -39,6 +41,8 @@ $factory->define(Thread::class, function (Faker\Generator $faker) {
         'channel_id' => function () {
             return factory(Channel::class)->create()->id;
         },
+        'created_at' => $faker->date(),
+        'updated_at' => $faker->date(),
     ];
 });
 
@@ -47,19 +51,23 @@ $factory->define(Channel::class, function (Faker\Generator $faker) {
     $name = $faker->unique()->word;
 
     return [
-        'name' => $name,
-        'slug' => str_slug($name),
+        'name'       => $name,
+        'slug'       => str_slug($name),
+        'created_at' => $faker->date(),
+        'updated_at' => $faker->date(),
     ];
 });
 
 $factory->define(Reply::class, function (Faker\Generator $faker) {
     return [
-        'body'      => $faker->paragraph,
-        'user_id'   => function () {
+        'body'       => $faker->paragraph,
+        'user_id'    => function () {
             return factory(User::class)->create()->id;
         },
-        'thread_id' => function () {
+        'thread_id'  => function () {
             return factory(Thread::class)->create()->id;
         },
+        'created_at' => $faker->date(),
+        'updated_at' => $faker->date(),
     ];
 });

@@ -35,8 +35,9 @@ trait RecordsActivity
     protected function recordActivity($event)
     {
         $this->activity()->create([
-            'user_id' => auth()->id(),
-            'type'    => $event . strtolower(class_basename($this)),
+            'user_id'    => auth()->id(),
+            'type'       => $event . strtolower(class_basename($this)),
+            'created_at' => $this->created_at
         ]);
     }
 
