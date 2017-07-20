@@ -16,7 +16,10 @@
                         <div class="panel-heading">
                             <div class="level">
                                 <span class="flex">
-                                    posted: {{ $thread->title }}
+                                    posted:
+                                    <a href="{{ route('threads.show', [$thread->channel->slug, $thread->id]) }}">
+                                        {{ $thread->title }}
+                                    </a>
                                 </span>
 
                                 <span>{{ $thread->created_at->diffForHumans() }}</span>

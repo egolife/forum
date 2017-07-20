@@ -58,20 +58,24 @@ class ManageThreadsTest extends TestCase
     }
 
     /** @test */
-    public function guests_can_not_delete_tests()
+    public function unauthorized_users_may_not_delete_threads()
     {
         $this->withExceptionHandling();
         $thread = create(Thread::class);
-        $response = $this->delete(route('threads.destroy', [$thread->channel->slug, $thread->id]));
-        $response->assertRedirect('/login');
+        $this->delete(route('threads.destroy', [$thread->channel->slug, $thread->id]))
+            ->assertRedirect('/login');
+
+        $this->signIn();
+        $this->delete(route('threads.destroy', [$thread->channel->slug, $thread->id]))
+            ->assertStatus(403);
     }
 
     /** @test */
-    public function a_thread_can_be_deleted()
+    public function authorized_users_can_delete_threads()
     {
         $this->signIn();
 
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
 
         $this->assertDatabaseHas('threads', $thread->toArray());
@@ -81,12 +85,6 @@ class ManageThreadsTest extends TestCase
 
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
-    }
-
-    /** @test */
-    public function threads_may_only_be_deleted_by_those_who_have_permission()
-    {
-
     }
 
     /**

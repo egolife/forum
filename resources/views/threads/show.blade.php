@@ -15,12 +15,16 @@
                                 {{ $thread->title }}
                             </span>
 
-                            <form action="{{ route('threads.destroy', [$thread->channel->slug, $thread->id]) }}">
-                                {{ csrf_field() }}
-                                {{ method_field('delete') }}
+                            @can('update', $thread)
+                                <form action="{{ route('threads.destroy', [$thread->channel->slug, $thread->id]) }}"
+                                      method="post"
+                                >
+                                    {{ csrf_field() }}
+                                    {{ method_field('delete') }}
 
-                                <button class="btn btn-link">Delete Thread</button>
-                            </form>
+                                    <button class="btn btn-link">Delete Thread</button>
+                                </form>
+                            @endcan
                         </div>
 
                     </div>
