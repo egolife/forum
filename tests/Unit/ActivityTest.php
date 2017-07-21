@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Activity;
 use App\Models\Reply;
 use App\Models\Thread;
+use Carbon\Carbon;
 use Tests\TestCase;
 
 class ActivityTest extends TestCase
@@ -36,5 +37,19 @@ class ActivityTest extends TestCase
         create(Reply::class);
 
         $this->assertCount(2, Activity::all());
+    }
+
+    /** @test */
+    public function it_fetches_activity_feed_for_any_user()
+    {
+        $this->signIn();
+
+        create(Thread::class, ['user_id' => auth()->id(), 'created_at' => Carbon::now()]);
+
+        create(Thread::class, ['user_id' => auth()->id(), 'created_at' => Carbon::now()->subWeek()]);
+
+        $feed = Activity::feed(auth()->user(), 50);
+        $this->assertTrue($feed->keys()->contains(Carbon::now()->format('Y-m-d')));
+        $this->assertTrue($feed->keys()->contains(Carbon::now()->subWeek()->format('Y-m-d')));
     }
 }

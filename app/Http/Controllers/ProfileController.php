@@ -11,14 +11,9 @@ class ProfileController extends Controller
     {
         $user = User::where('name', $userName)->firstOrFail();
 
-        $activities = $user->activity()->latest()->with('subject')->take(50)->get()
-            ->groupBy(function (Activity $activity) {
-                return $activity->created_at->format('Y-m-d');
-            });
-
         return view('profiles.show')->with([
             'profile_user' => $user,
-            'activities'   => $activities,
+            'activities'   => Activity::feed($user),
         ]);
     }
 }
