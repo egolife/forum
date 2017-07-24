@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Reply;
+use App\Models\Thread;
 use Tests\TestCase;
 
 class FavoritesTest extends TestCase
@@ -12,6 +13,16 @@ class FavoritesTest extends TestCase
     {
         $this->withExceptionHandling();
         $this->post('replies/1/favorites')->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function guests_can_not_see_favorite_button()
+    {
+        $thread = create(Thread::class);
+        create(Reply::class, ['thread_id' => $thread->id]);
+
+        $this->get(route('threads.show', [$thread->channel->slug, $thread->id]))
+            ->assertDontSee('<favorite');
     }
 
     /** @test */

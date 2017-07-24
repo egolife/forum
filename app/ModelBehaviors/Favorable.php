@@ -4,9 +4,20 @@ namespace App\ModelBehaviors;
 
 
 use App\Models\Favorite;
+use Illuminate\Database\Eloquent\Model;
 
 trait Favorable
 {
+    /**
+     * Runs automatically by Eloquent model boot method
+     */
+    protected static function bootFavorable()
+    {
+        static::deleting(function (Model $model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     /**
      * Users who favorite this reply
      *
@@ -36,7 +47,7 @@ trait Favorable
      */
     public function unfavorite()
     {
-        $this->favorites()->where('user_id', auth()->id())->delete();
+        $this->favorites()->where('user_id', auth()->id())->get()->each->delete();
     }
 
     /**

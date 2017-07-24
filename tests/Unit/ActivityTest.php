@@ -40,6 +40,19 @@ class ActivityTest extends TestCase
     }
 
     /** @test */
+    public function it_records_activity_when_a_reply_is_favorited()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class);
+        $this->assertDatabaseMissing('activities', ['type' => 'created_favorite']);
+        $reply->favorite(auth()->id());
+
+        $this->assertCount(3, Activity::all());
+        $this->assertDatabaseHas('activities', ['type' => 'created_favorite']);
+    }
+
+    /** @test */
     public function it_fetches_activity_feed_for_any_user()
     {
         $this->signIn();
@@ -51,5 +64,17 @@ class ActivityTest extends TestCase
         $feed = Activity::feed(auth()->user(), 50);
         $this->assertTrue($feed->keys()->contains(Carbon::now()->format('Y-m-d')));
         $this->assertTrue($feed->keys()->contains(Carbon::now()->subWeek()->format('Y-m-d')));
+    }
+
+    /** @test */
+    public function it_removes_activity_when_reply_unfavorited()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class);
+        $reply->favorite(auth()->id());
+        $this->assertDatabaseHas('activities', ['type' => 'created_favorite']);
+        $reply->unfavorite();
+        $this->assertDatabaseMissing('activities', ['type' => 'created_favorite']);
     }
 }

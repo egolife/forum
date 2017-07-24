@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Tests\TestCase;
@@ -18,7 +19,7 @@ class ProfilesTest extends TestCase
     }
 
     /** @test */
-    public function profiles_display_all_threads_created_by_the_associated_user()
+    public function profiles_display_all_threads_created_by_user()
     {
         $this->signIn();
 
@@ -27,5 +28,28 @@ class ProfilesTest extends TestCase
         $this->get('/profiles/' . auth()->user()->name)
             ->assertSee($thread->title)
             ->assertSee($thread->body);
+    }
+
+    /** @test */
+    public function profiles_display_all_replies_written_by_user()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $this->get('/profiles/' . auth()->user()->name)
+            ->assertSee($reply->body);
+    }
+
+    /** @test */
+    public function profiles_display_all_reply_favorites_made_by_user()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+        $reply->favorite(auth()->id());
+
+        $this->get('/profiles/' . auth()->user()->name)
+            ->assertSee(auth()->user()->name . ' favorited a reply.');
     }
 }
