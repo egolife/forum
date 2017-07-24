@@ -25,6 +25,6 @@ class ReplyController extends Controller
             'user_id' => request()->user()->id,
         ]);
 
-        return back();
+        return back()->with('flash', 'reply was added!');
     }
 }

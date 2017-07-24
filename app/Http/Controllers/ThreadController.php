@@ -74,7 +74,9 @@ class ThreadController extends Controller
             'body'       => request('body'),
         ]);
 
-        return redirect()->route('threads.show', [$thread->channel->slug, $thread->id]);
+        return redirect()
+            ->route('threads.show', [$thread->channel->slug, $thread->id])
+            ->with('flash', 'Your thread has been published!');
     }
 
     public function destroy(Channel $channel, Thread $thread)
