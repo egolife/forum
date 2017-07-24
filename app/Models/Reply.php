@@ -10,7 +10,7 @@ class Reply extends Model
 {
     use Favorable, RecordsActivity;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     protected $with = ['author', 'favorites'];
 
