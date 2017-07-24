@@ -28,6 +28,7 @@ Route::post('threads/{channel}/{thread}/replies', 'ReplyController@store')->name
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::delete('replies/{reply}', 'ReplyController@destroy')->name('replies.destroy');
 Route::post('/replies/{reply}/favorites', 'FavoriteController@store')->name('favorites.store');
 
 Route::get('/profiles/{user}', 'ProfileController@show')->name('profiles.show');

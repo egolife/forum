@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reply;
 use App\Models\Thread;
 
 class ReplyController extends Controller
@@ -26,5 +27,17 @@ class ReplyController extends Controller
         ]);
 
         return back()->with('flash', 'reply was added!');
+    }
+
+    /**
+     * @param Reply $reply
+     */
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->delete();
+
+        return back()->with('flash', 'reply was deleted!');
     }
 }

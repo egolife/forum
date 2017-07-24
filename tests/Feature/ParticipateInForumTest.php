@@ -42,4 +42,32 @@ class ParticipateInForumTest extends TestCase
             ->assertRedirect('/login');
 
     }
+
+    /** @test */
+    public function unauthorized_users_can_not_delete_replies()
+    {
+        $this->withExceptionHandling();
+
+        $reply = create(Reply::class);
+        $this->delete(route('replies.destroy', $reply->id))
+            ->assertRedirect('login');
+
+        $this->signIn()
+            ->delete(route('replies.destroy', $reply->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function authorized_users_can_delete_replies()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $this->delete(route('replies.destroy', $reply->id))
+            ->assertStatus(302)
+            ->assertSessionHas('flash', 'reply was deleted!');
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
 }
