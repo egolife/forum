@@ -11,6 +11,7 @@ class Reply extends Model
     use Favorable, RecordsActivity;
 
     protected $guarded = [];
+    protected $appends = ['favorites_count', 'is_favorited'];
 
     protected $with = ['author', 'favorites'];
 

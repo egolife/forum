@@ -32,6 +32,14 @@ trait Favorable
     }
 
     /**
+     * Unregister existing favorite for reply
+     */
+    public function unfavorite()
+    {
+        $this->favorites()->where('user_id', auth()->id())->delete();
+    }
+
+    /**
      * If this reply is favorited by current user
      *
      * @return bool
@@ -39,6 +47,14 @@ trait Favorable
     public function isFavorited()
     {
         return !!$this->favorites->where('user_id', auth()->id())->count();
+    }
+
+    /**
+     * Custom accessor for is_favorited attribute
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited();
     }
 
     /**

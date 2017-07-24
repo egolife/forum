@@ -1,0 +1,45 @@
+<template>
+    <div>
+        <button :class="classes" @click="toggle">
+            <span class="glyphicon glyphicon-heart"></span>
+            <span v-text="count"></span>
+        </button>
+    </div>
+</template>
+
+<script>
+    export default {
+        props: ['reply'],
+        data() {
+            return {
+                count: this.reply.favorites_count,
+                active: this.reply.is_favorited,
+            };
+        },
+        computed: {
+            classes() {
+                return ['btn', this.active ? 'btn-primary' : 'btn-default'];
+            },
+            endpoint() {
+                return '/replies/' + this.reply.id + '/favorites';
+            },
+        },
+        methods: {
+            toggle() {
+                this.active ? this.unfavorite() : this.favorite();
+            },
+            favorite() {
+                axios.post(this.endpoint);
+
+                this.active = true;
+                this.count++;
+            },
+            unfavorite() {
+                axios.delete(this.endpoint);
+
+                this.active = false;
+                this.count--;
+            },
+        },
+    };
+</script>
