@@ -21,11 +21,14 @@ class ReplyController extends Controller
     {
         $this->validate(request(), ['body' => 'required']);
 
-        $thread->addReply([
+        $reply = $thread->addReply([
             'body'    => request('body'),
             'user_id' => request()->user()->id,
         ]);
 
+        if (request()->wantsJson()) {
+            return $reply->load('author');
+        }
         return back()->with('flash', 'reply was added!');
     }
 

@@ -62,10 +62,11 @@ class Thread extends Model
      * Create new reply in this thread with provided attributes
      *
      * @param array $attributes
+     * @return Reply|Model
      */
     public function addReply(array $attributes)
     {
-        $this->replies()->create($attributes);
+        return $this->replies()->create($attributes);
     }
 
     public function scopeFilter($query, ThreadFilter $filter)
