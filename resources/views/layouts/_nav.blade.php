@@ -43,6 +43,11 @@
                                 Top threads (popular all time)
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('threads.index', ['unanswered' => 1]) }}">
+                                Unanswered threads
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>

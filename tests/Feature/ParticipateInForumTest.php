@@ -9,7 +9,7 @@ use Tests\TestCase;
 class ParticipateInForumTest extends TestCase
 {
     /** @test */
-    public function an_authenticated_user_can_participate_in_forum_threads()
+    public function an_authenticated_user_may_participate_in_forum_threads()
     {
         $thread = create(Thread::class);
         $reply = make(Reply::class);
@@ -17,9 +17,7 @@ class ParticipateInForumTest extends TestCase
         $this->signIn()
             ->post(route('replies.store', [$thread->channel->slug, $thread->id]), $reply->toArray());
 
-        $this
-            ->get(route('threads.show', [$thread->channel->slug, $thread->id]))
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     /** @test */

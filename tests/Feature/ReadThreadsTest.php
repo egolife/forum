@@ -34,15 +34,6 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_read_replies_that_are_associated_with_a_thread()
-    {
-        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
-
-        $this->get('/threads/' . $this->thread->channel->slug . '/' . $this->thread->id)
-            ->assertSee($reply->body);
-    }
-
-    /** @test */
     public function a_user_can_filter_threads_according_to_a_channel()
     {
         $channel = create(Channel::class);
@@ -82,6 +73,16 @@ class ReadThreadsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_filter_threads_by_whose_unanswered()
+    {
+        $thread = create(Thread::class);
+        create(Reply::class, ['thread_id' => $thread->id]);
+
+        $response = $this->getJson(route('threads.index', ['unanswered' => 1]))->json();
+        $this->assertCount(1, $response);
+    }
+
+    /** @test */
     public function a_user_can_request_all_replies_for_a_given_thread()
     {
         $thread = create(Thread::class);
@@ -89,7 +90,7 @@ class ReadThreadsTest extends TestCase
 
         $response = $this->getJson(route('replies.index', [$thread->channel->slug, $thread->id]))->json();
 
-        $this->assertCount(1, $response['data']);
+        $this->assertCount(2, $response['data']);
         $this->assertEquals(2, $response['total']);
     }
 }

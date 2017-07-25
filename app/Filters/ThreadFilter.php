@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ThreadFilter extends Filter
 {
-    protected $filters = ['by', 'popular'];
+    protected $filters = ['by', 'popular', 'unanswered'];
 
     /**
      * Filter query by a given username
@@ -31,5 +31,15 @@ class ThreadFilter extends Filter
     {
         $this->builder->getQuery()->orders = [];
         return $this->builder->orderBy('replies_count', 'desc');
+    }
+
+    /**
+     * Filter query by unanswered threads
+     *
+     * @return Builder
+     */
+    protected function unanswered(): Builder
+    {
+        return $this->builder->where('replies_count', 0);
     }
 }
