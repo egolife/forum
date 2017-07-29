@@ -71,3 +71,15 @@ $factory->define(Reply::class, function (Faker\Generator $faker) {
         'updated_at' => $faker->date(),
     ];
 });
+
+$factory->define(\Illuminate\Notifications\DatabaseNotification::class, function (Faker\Generator $faker) {
+    return [
+        'id'              => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+        'type'            => \App\Notifications\ThreadWasUpdated::class,
+        'notifiable_id'   => function () {
+            return auth()->id() ?? factory(User::class)->create()->id;
+        },
+        'notifiable_type' => User::class,
+        'data'            => ['foo' => 'bar']
+    ];
+});

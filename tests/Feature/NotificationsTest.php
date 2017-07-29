@@ -4,14 +4,20 @@ namespace Tests\Feature;
 
 use App\Models\Thread;
 use App\Models\User;
+use Illuminate\Notifications\DatabaseNotification;
 use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        $this->signIn();
+    }
+
     /** @test */
     public function a_notification_is_prepared_when_a_subscribed_thread_receives_a_new_reply_by_other_user()
     {
-        $this->signIn();
         $thread = create(Thread::class)->subscribe();
 
         $this->assertCount(0, auth()->user()->notifications);
@@ -34,15 +40,7 @@ class NotificationsTest extends TestCase
     /** @test */
     public function a_user_can_fetch_their_unread_notifications()
     {
-        $this->signIn();
-        $user = auth()->user();
-
-        $thread = create(Thread::class)->subscribe();
-
-        $thread->addReply([
-            'user_id' => create(User::class)->id,
-            'body'    => 'some reply here',
-        ]);
+        create(DatabaseNotification::class);
 
         $response = $this->getJson(route('notifications.index', auth()->id()))->json();
 
@@ -52,15 +50,9 @@ class NotificationsTest extends TestCase
     /** @test */
     public function a_user_can_mark_a_notification_as_read()
     {
-        $this->signIn();
         $user = auth()->user();
 
-        $thread = create(Thread::class)->subscribe();
-
-        $thread->addReply([
-            'user_id' => create(User::class)->id,
-            'body'    => 'some reply here',
-        ]);
+        create(DatabaseNotification::class);
 
         $this->assertCount(1, $user->unreadNotifications);
 
