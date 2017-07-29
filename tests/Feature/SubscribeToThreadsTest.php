@@ -14,15 +14,7 @@ class SubscribeToThreadsTest extends TestCase
         $thread = create(Thread::class);
 
         $this->post(route('subscription.store', [$thread->channel->slug, $thread->id]));
-
-        $this->assertCount(1, $thread->subscriptions);
-
-        $thread->addReply([
-            'user_id' => auth()->id(),
-            'body'    => 'some reply here',
-        ]);
-
-//        auth()->user()->notifications;
+        $this->assertCount(1, $thread->fresh()->subscriptions);
     }
 
     /** @test */
