@@ -59,4 +59,22 @@ class ThreadTest extends TestCase
             route('threads.show', [$thread->channel->slug, $thread->id])
         );
     }
+
+    /** @test */
+    public function a_thread_can_be_subscribed_to()
+    {
+        $thread = create(Thread::class);
+        $thread->subscribe($userId = 1);
+        $subscriptions_count = $thread->subscriptions()->where('user_id', $userId)->count();
+        $this->assertEquals(1, $subscriptions_count);
+    }
+
+    /** @test */
+    public function a_thread_can_be_unsubscribed_from()
+    {
+        $thread = create(Thread::class);
+        $thread->subscribe($userId = 1);
+        $thread->unsubscribe($userId);
+        $this->assertCount(0, $thread->subscriptions);
+    }
 }
