@@ -15,4 +15,9 @@ class ThreadSubscriptionController extends Controller
     {
         $thread->subscribe();
     }
+
+    public function destroy($channelSlug, Thread $thread)
+    {
+        $thread->unsubscribe();
+    }
 }

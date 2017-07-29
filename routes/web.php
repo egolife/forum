@@ -28,6 +28,8 @@ Route::get('threads/{channel}/{thread}/replies', 'ReplyController@index')->name(
 Route::post('threads/{channel}/{thread}/replies', 'ReplyController@store')->name('replies.store');
 Route::post('threads/{channel}/{thread}/subscriptions',
     'ThreadSubscriptionController@store')->name('subscription.store');
+Route::delete('threads/{channel}/{thread}/subscriptions',
+    'ThreadSubscriptionController@destroy')->name('subscription.destroy');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

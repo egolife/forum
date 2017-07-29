@@ -41,10 +41,15 @@
                 <div class="col-md-4">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            This thread was published {{ $thread->created_at->diffForHumans() }}
-                            by
-                            <a href="{{ route('profiles.show', $thread->author->name) }}">{{ $thread->author->name }}</a>,
-                            and currently has <span v-text="repliesCount"></span> comments.
+                            <p>
+                                This thread was published {{ $thread->created_at->diffForHumans() }}
+                                by
+                                <a href="{{ route('profiles.show', $thread->author->name) }}">{{ $thread->author->name }}</a>,
+                                and currently has <span v-text="repliesCount"></span> comments.
+                            </p>
+                            <p>
+                                <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                            </p>
                         </div>
                     </div>
                 </div>
