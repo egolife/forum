@@ -26,6 +26,8 @@ Route::delete('threads/{channel}/{thread}', 'ThreadController@destroy')->name('t
 
 Route::get('threads/{channel}/{thread}/replies', 'ReplyController@index')->name('replies.index');
 Route::post('threads/{channel}/{thread}/replies', 'ReplyController@store')->name('replies.store');
+Route::post('threads/{channel}/{thread}/subscriptions',
+    'ThreadSubscriptionController@store')->name('subscription.store');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
