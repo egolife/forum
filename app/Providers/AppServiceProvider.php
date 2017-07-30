@@ -29,11 +29,10 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('nav._impersonate', function ($view) {
             $users = Cache::rememberForever('users', function () {
-                return User::all();
+                return User::where('id', '<>', auth()->id())->get();
             });
             $view->with('users', $users);
         });
-
     }
 
     /**

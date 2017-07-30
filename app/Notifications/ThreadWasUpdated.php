@@ -66,7 +66,8 @@ class ThreadWasUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Temporary placeholder',
+            'message' => $this->reply->author->name . ' replied to ' . $this->thread->title,
+            'link'    => $this->reply->path()
         ];
     }
 }
