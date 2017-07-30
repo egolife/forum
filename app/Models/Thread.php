@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ReplyHasBeenAdded;
 use App\Filters\ThreadFilter;
 use App\ModelBehaviors\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
@@ -68,11 +69,19 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($attributes);
 
+        $this->notifySubscribers($reply);
+
+        return $reply;
+    }
+
+    /**
+     * @param Reply $reply
+     */
+    public function notifySubscribers(Reply $reply)
+    {
         $this->subscriptions
             ->where('user_id', '!=', $reply->user_id)
             ->each->notify($reply);
-
-        return $reply;
     }
 
     public function scopeFilter($query, ThreadFilter $filter)
